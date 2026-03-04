@@ -119,49 +119,8 @@ uv run streamlit run medibot.py
 ```
 Open the URL shown (default: http://localhost:8501) and start chatting.
 
-## 🔄 Switching Embedding Modes
-`medibot.py` includes:
-```python
-get_vectorstore()              # local model download
-get_vectorstore_hf_api(token)  # uses HuggingFace API
-```
-To switch:
-```python
-vectorstore = get_vectorstore_hf_api(os.environ["HF_TOKEN"])  # replace get_vectorstore()
-```
-Use this if your environment (e.g. limited disk) should call the HF Inference API instead of hosting the embedding model locally.
-
 ## 🛠 Prompt Customization
 Modify `CUSTOM_PROMPT_TEMPLATE` in either script to adjust answer tone or style. Ensure variables `{context}` and `{question}` remain.
-
-## 🧪 Quick Sanity Test
-After building the vector store:
-```zsh
-python - <<'PY'
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-emb = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
-db = FAISS.load_local('vectorstore/db_faiss', emb, allow_dangerous_deserialization=True)
-print('Index loaded. k=2 sample:\n', db.similarity_search('What is diabetes?', k=2))
-PY
-```
-
-## 🧾 Source Document Display
-Both scripts request `return_source_documents=True`. The final output enumerates the raw `Document` objects; you can pretty-print them by iterating and showing `doc.metadata` + a trimmed `doc.page_content`.
-
-Example enhancement snippet:
-```python
-for i, d in enumerate(source_documents, 1):
-    snippet = d.page_content[:300].replace('\n', ' ')
-    print(f"[Source {i}] {snippet}...")
-```
-
-## 🧱 Extending
-- Add multi-PDF ingestion (glob over `data/*.pdf`)
-- Enable streaming tokens in UI
-- Add OpenAI / Anthropic backend abstraction
-- Persist chat history with sources
-- Add evaluation harness (e.g. RAGAS) for answer faithfulness
 
 ## ✅ Minimal Usage Recap
 ```zsh
