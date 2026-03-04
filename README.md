@@ -46,14 +46,7 @@ User Query --> Retriever (top-k) ---------------┘
 ## 🔐 Environment Variables
 Create a `.env` file (or export in shell):
 ```
-HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxxx
 GROQ_API_KEY=groq_xxxxxxxxxxxxxxxxxxx
-```
-
-Optional (future expansion):
-```
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-HUGGINGFACE_REPO_ID=mistralai/Mistral-7B-Instruct-v0.3
 ```
 
 ## ⚙️ Installation
@@ -122,7 +115,7 @@ Enter a query at the prompt: `How is hypertension managed?`
 ```zsh
 source .venv/bin/activate
 export GROQ_API_KEY=groq_...  # if not in .env
-streamlit run medibot.py
+uv run streamlit run medibot.py
 ```
 Open the URL shown (default: http://localhost:8501) and start chatting.
 
@@ -163,25 +156,12 @@ for i, d in enumerate(source_documents, 1):
     print(f"[Source {i}] {snippet}...")
 ```
 
-## 🐛 Troubleshooting
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `InferenceClient.text_generation() unexpected keyword 'token'` | Passing token in `model_kwargs` | Use `huggingfacehub_api_token` arg (already fixed) |
-| `FAISS.load_local ... file not found` | Vector store not built | Run memory creation script first |
-| Empty / irrelevant answers | Too small `k` or chunk size mismatch | Adjust `search_kwargs={'k':5}` or rebuild with better chunking |
-| Hallucinations | LLM ignoring context | Tighten prompt, lower temperature, reduce max tokens |
-| `HF_TOKEN not set` error | Missing env var | Export token or add to `.env` |
-| Virtualenv mismatch warning | Old `VIRTUAL_ENV` exported | `deactivate` then `source .venv/bin/activate` |
-
 ## 🧱 Extending
 - Add multi-PDF ingestion (glob over `data/*.pdf`)
 - Enable streaming tokens in UI
 - Add OpenAI / Anthropic backend abstraction
 - Persist chat history with sources
 - Add evaluation harness (e.g. RAGAS) for answer faithfulness
-
-## ⚖️ Disclaimer
-This tool is for educational and reference purposes only. It does **not** provide medical advice, diagnosis, or treatment recommendations. Always consult a licensed healthcare professional for medical decisions.
 
 ## ✅ Minimal Usage Recap
 ```zsh
@@ -190,8 +170,6 @@ uv run streamlit run medibot.py            # chat UI (needs GROQ_API_KEY)
 python connect_memory_with_llm.py          # CLI (needs HF_TOKEN)
 ```
 
----
-Questions or want enhancements? Open an issue or extend the scripts directly. Enjoy building with RAG! 🧪
 
 
 
