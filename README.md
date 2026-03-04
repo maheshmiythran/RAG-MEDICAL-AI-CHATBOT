@@ -186,7 +186,7 @@ This tool is for educational and reference purposes only. It does **not** provid
 ## ✅ Minimal Usage Recap
 ```zsh
 python create_memory_for_llm.py            # build index (one time)
-streamlit run medibot.py                   # chat UI (needs GROQ_API_KEY)
+uv run streamlit run medibot.py            # chat UI (needs GROQ_API_KEY)
 python connect_memory_with_llm.py          # CLI (needs HF_TOKEN)
 ```
 
